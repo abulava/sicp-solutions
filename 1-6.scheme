@@ -1,0 +1,12 @@
+;; exercise 1.6
+
+(define (sqrt-iter guess x)
+  (new-if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x)
+                     x)))
+
+;; получится бесконечная рекурсия,
+;; потому что выражение (new-if <op1> <op2> <op3>) вычисляется в аппликативном порядке,
+;; а значит до применения new-if нужно вычислить операнд (sqrt-iter (improve guess x) x)
+;; вне зависимости от значения операнда (good-enough? guess x)
