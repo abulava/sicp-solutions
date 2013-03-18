@@ -4,7 +4,9 @@
   (/ (+ x y) 2))
 
 (define (improve guess x)
-  (average guess (/ x guess)))
+  (if (> guess 1e-150)
+      (average guess (/ x guess))
+      0.0))
 
 (define (sqrt x)
   (sqrt-iter 1.0 x x))
@@ -12,14 +14,11 @@
 (define (sqrt-iter guess guess-prev x)
   (if (good-enough? guess guess-prev)
       guess
-      (sqrt-iter (improve guess x)
-                 guess
-                 x)))
+      (sqrt-iter (improve guess x) guess x)))
 
 (define (good-enough? guess guess-prev)
-  (< (abs                         ;; эквивалент (< (abs
-      (- 1 (/ guess-prev guess))) ;;                (- guess guess-prev))
-      0.001))                     ;;               (* guess 0.001))
+  (<= (abs (- guess guess-prev))
+      (* guess 0.001)))
 
 ;; good-enough? работает одинаково хорошо для очень малых/больших x потому что в результате каждой итерации
 ;; значение (/ guess-prev guess) приближается к 1
